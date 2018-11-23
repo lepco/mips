@@ -28,6 +28,7 @@
     
     ///////
   Variables :
+  
     {0}int rd
     {1}int rs
     {2}int rt
@@ -37,10 +38,12 @@
     char fichierLecture[100] //nom du fichier qui contient les instructions assembleur
     char fichierEcriture[100] //nom du fichier où on écrit les instructions en binaire
     char robert[15] //Instuction assembleur(ADD, NOP, BGTZ,...)
-    int instBin; 00000000000000
+    int instBin; //Instruction en binaire
+  
+  
   Fonctions :
   
-    lecture(nomFichier)
+    lecture(fichierLecture)
       >> Ecrire dans un tableau l'instruction entière, ATTENTION ! Ne pas écrire les commentaire
       
     separation(une instruction)
@@ -50,7 +53,7 @@
       >> Prend les variables et compose l'instruction en binaire
       retourne resultat
      
-    ecritureFichier(nomFichier, instruction binaire)
+    ecritureFichier(fichierEcriture, instruction binaire)
       >> Ecrit dans nomFichier l'instruction en binaire
       
     Réinitialisation des variable
