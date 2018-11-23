@@ -33,22 +33,24 @@
     {2}int rt
     {3}int im
     {4}int of
-    char inst[100] 
+    char inst[100]
+    char fichierLecture[100] //nom du fichier qui contient les instructions assembleur
+    char fichierEcriture[100] //nom du fichier où on écrit les instructions en binaire
     char robert[15] //Instuction assembleur(ADD, NOP, BGTZ,...)
     int instBin; 00000000000000
   Fonctions :
   
-    Lecture(nomFichier)
-      >> Ecrire dans un tableau l'instruction entière
+    lecture(nomFichier)
+      >> Ecrire dans un tableau l'instruction entière, ATTENTION ! Ne pas écrire les commentaire
       
-    Separation(une instruction)
+    separation(une instruction)
       >> Sépare et affecte Rd, Rs,...
       
-    EcritureBinaire()
+    ecritureBinaire()
       >> Prend les variables et compose l'instruction en binaire
       retourne resultat
      
-    EcritureFichier(nomFichier, instruction binaire)
+    ecritureFichier(nomFichier, instruction binaire)
       >> Ecrit dans nomFichier l'instruction en binaire
       
     Réinitialisation des variable
