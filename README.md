@@ -43,7 +43,7 @@
   
   Fonctions :
   
-    lecture(fichierLecture)
+    lecture(fichierLecture, inst[])
       >> Ecrire dans un tableau l'instruction entière, ATTENTION ! Ne pas écrire les commentaire
       
     separation(une instruction)
