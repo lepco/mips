@@ -6,6 +6,6 @@ void lecture(fichierLecture);
 
 void separation(instruction);
 
-int ecritureBinaire(int rd, int rt, int rs, int instBin);
+int ecritureBinaire(int un, int deux, int trois, int indic);
 
 void ecritureFichier(fichierEcriture, instBin);
