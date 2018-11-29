@@ -11,18 +11,24 @@
 // Declaration des variables
 //-------------------------------------------------------------------------------------------------*/
 
-int un;
-int deux;
-int trois;
+int rd =11;
+int rs = 10;
+int rt = 11;
+int im = 0;
+int of = 0;
 
-char inst[100]; /*Contient l'instruction assembleur brute*/
-char fichierLecture[100]; /*nom du fichier qui contient les instructions assembleur*/
+
+char fichierLecture[100]="aLire.txt"; /*nom du fichier qui contient les instructions assembleur*/
 char fichierEcriture[100]; /*nom du fichier o� on �crit les instructions en binaire*/
-char *robert[] = {"ADD", "ADDI", "AND", "BNE", "ROTR", "NOP"}; /*USE: printf(%s\n, robert[i])*/
-int indic; /*indice dans le tableau robert correspondant à la commande EX:Commande=AND==>Indic=2*/
-/*int instBin; /* 00000000000000*/
+char *robert[15] = {"ADD", "ADDI", "AND", "BNE", "ROTR", "NOP"};;/*Instuction assembleur(ADD, NOP, BGTZ,...)*/
+int instBin; /* 00000000000000*/
+long cur=0;
+char ligne[20] ="";
 
 
+
+/*robert[] = {"ADD"};*/
+instBin = 0;
 
 /*-------------------------------------------------------------------------------------------------
 // Appel des fonctions
@@ -32,7 +38,10 @@ int indic; /*indice dans le tableau robert correspondant à la commande EX:Comma
 
 //separation(inst);*/
 int main(){
-	printf("%x\n",ecritureBinaire(un, deux, trois, indic));
-	int instBin = ecritureBinaire(un, deux, trois, indic);
+/*ecritureBinaire(rd, rt, rs, instBin);
+	lecture("aLire.txt");*/
+	while(recupCode(fichierLecture, ligne, &cur) != -1){
+		printf("%d\n",separation(ligne, robert));
+	}
 	return(0);
 }
