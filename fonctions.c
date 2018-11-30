@@ -74,7 +74,7 @@ int ecritureBinaire(int tab[], int indic){
 
 
 
-int separation(char * ligne, char *robert[]){
+int separation(char * ligne, char *robert[], char fichierEcriture[100]){
 	int i=0;
 	int j=0;
 	int l=0;
@@ -111,7 +111,9 @@ int separation(char * ligne, char *robert[]){
 
 	int indic = findIndic(robert, tab);
 
-	return(printf("%x\n",ecritureBinaire(tab3,indic)));
+	/*return(printf("%x\n",ecritureBinaire(tab3,indic)));*/
+	ecritureFichier("text.txt", ecritureBinaire(tab3,indic));
+	return(0);
 
 }
 
@@ -121,4 +123,29 @@ int findIndic(char *robert[],char *tab[]){
 		i++;
 	}
 	return (i);
+}
+
+void ecritureFichier(char fichierEcriture[],int instBin){
+	FILE * fic;
+	int k, i;
+
+	fic = fopen(fichierEcriture, "a");/*Ouvre le fichier a la fin ou en creer un nouveau*/
+	if(fic != NULL){
+	/*	printf("instBin = %d\n", instBin);*/
+		for (i = 32; i!=0; i--) {
+			k = instBin >> i;
+			if (k & 1)
+				fprintf(fic,"1");
+			else
+				fprintf(fic,"0");
+		}
+
+		fprintf(fic, "\n");
+	}
+	else{
+		perror("Probleme ouverture du fichier en ecriture");
+		exit(1);
+	}
+
+	fclose(fic);
 }
