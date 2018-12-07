@@ -1,0 +1,73 @@
+c----------------------------------------------------------------------------------------------------------
+Liste des opérations :
+ 1) On lit dans le fichier binaire et on récupère une instruction (32 bits) (dans un entier ?),
+  	il faut sauvegarder l'endroit où on s'est arrêté de lire
+ 2) On lit l'en-tête de l'instruction et en fonction on détermine si on doit aller récupérer des valeurs
+ 		dans des registres et quelle action le processeur va effectuer
+ 3) On va récupérer les valeurs dans les registres correspondants si nécessaire
+ 4) On applique l'opération de l'instruction (ADD, BNE,...)
+ 5) On écrit des les registres
+ 6) On écrit dans la mémoire ?
+ 7) On affiche les registres
+----------------------------------------------------------------------------------------------------------
+Format du registre :
+	Tableau, pour sa dimension voir doc (int Taille 34)
+
+Format de la Mémoire :
+	Lire chaque instruction dans le fichier
+----------------------------------------------------------------------------------------------------------
+Module Registre :
+	- Lecture dans le Registre (nom du registre dans les 2 formats possibles), retourne la valeur
+	- Écriture dans le registre (nom du registre dans les 2 formats possibles, valeur à prendre, valeur à ajouter)
+	- Initialisation
+
+Module Processeur
+	- Une fonction par opération, (valeurs registres), retourne une valeur
+
+Module Affichage :
+	- Affiche l'instruction en texte, en hexa puis l'ensemble des registres,
+	 	pas de paramètre, pas de valeur de retour
+
+Module Mémoire :
+	- Lecture instruction par instruction dans le fichier
+
+Autres fonctions :
+	- Analyse de l'instruction, séparation des différents éléments
+----------------------------------------------------------------------------------------------------------
+
+BNE(rs,rt){
+	if(rs=rt){
+		ecritureRegistre($pc, lectureRegistre($pc), 4)
+	}
+	else{
+		ecritureRegistre($pc, 0, 12)
+	}
+}
+
+ADDI(rs,rt,immediate){
+	ecritureRegistre($rt, lectureRegistre($rs), immediate);
+	ecritureRegistre($pc, lectureRegistre($pc), 4);
+	}
+	
+ADD(rd,rs,rt){
+	int a=2,b=3
+	int c
+	c = fonctionAddition(a,b)
+	
+	ecritureRegistre($rd, lectureRegistre($rs), lectureRegistre($rt));
+	ecritureRegistre($pc, lectureRegistre($pc), 4);
+	}
+Main{
+rt=12;
+
+
+
+switch :
+
+	ADD :	ADD(rd
+		ecritrt
+
+	ADDI : ADDI()
+		ecriture
+	
+	BNE :
