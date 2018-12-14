@@ -26,7 +26,7 @@ int ecritureBinaire(int tab[], int indic){
 	switch(indic){
 
 		case 0 : /*ADD*/
-			instBin = instBin | 32; /* 0000 0000 0000 0000 0000 0000 0010 0000 */
+			instBin = instBin | 32; 
 			instBin = instBin | tab[0]<<11;
 			instBin = instBin | tab[2]<<16;
 			instBin = instBin | tab[1]<<21;
@@ -57,7 +57,7 @@ int ecritureBinaire(int tab[], int indic){
 			instBin = instBin | 2;
 			instBin = instBin | tab[2]<<6;
 			instBin = instBin | tab[0]<<11;
-			instBin = instBin | tab[1]+32<<16;
+			instBin = instBin | (tab[1]+32)<<16;
 			break;
 
 		case 5: /*NOP*/
@@ -65,7 +65,7 @@ int ecritureBinaire(int tab[], int indic){
 
 
 		default :
-			printf("Erreur");
+			printf("Erreur\n");
 			break;
 	}
 
@@ -77,11 +77,9 @@ int ecritureBinaire(int tab[], int indic){
 int separation(char * ligne, char *robert[], char fichierEcriture[100]){
 	int i=0;
 	int j=0;
-	int l=0;
 	int k=0;
 	char tab[10]="";
-	char tab2[10]="";
-	int tab3[10];
+	int tab3[10]={0};
 
 	while (ligne[i] != NULL){
 
@@ -91,27 +89,25 @@ int separation(char * ligne, char *robert[], char fichierEcriture[100]){
 			}
 
 		else if (ligne[i] >= 0x30 && ligne[i] <= 0x39){
-			while (ligne[i] != 0x2c && ligne[i] != 0x0a){
+			char tab2[10]="";
+			int l=0;
+			while (ligne[i] != 0x2c && ligne[i] != 0x0a && ligne[i] != NULL){
 				tab2[l] = ligne[i];
+				printf("TAB2: %s, ligne: %c\n", tab2, ligne[i]);
 				l++;
 				i++;
 			}
 			tab3[k] = atoi(tab2);
-			strcpy(tab2, "");
 			k++;
-			i--;
-			l=0;
 		}
-
 		i++;
+		
 	}
-
-
+	
 
 
 	int indic = findIndic(robert, tab);
 
-	/*return(printf("%x\n",ecritureBinaire(tab3,indic)));*/
 	ecritureFichier("text.txt", ecritureBinaire(tab3,indic));
 	return(0);
 
@@ -123,7 +119,8 @@ int findIndic(char *robert[],char *tab[]){
 		i++;
 	}
 	return (i);
-}
+	
+}	
 
 void ecritureFichier(char fichierEcriture[],int instBin){
 	FILE * fic;
@@ -131,8 +128,7 @@ void ecritureFichier(char fichierEcriture[],int instBin){
 
 	fic = fopen(fichierEcriture, "a");/*Ouvre le fichier a la fin ou en creer un nouveau*/
 	if(fic != NULL){
-	/*	printf("instBin = %d\n", instBin);*/
-		for (i = 32; i!=0; i--) {
+		for (i = 31; i>=0; i--) {
 			k = instBin >> i;
 			if (k & 1)
 				fprintf(fic,"1");
@@ -141,6 +137,7 @@ void ecritureFichier(char fichierEcriture[],int instBin){
 		}
 
 		fprintf(fic, "\n");
+		fprintf(fic, "%02X\n", instBin);
 	}
 	else{
 		perror("Probleme ouverture du fichier en ecriture");
