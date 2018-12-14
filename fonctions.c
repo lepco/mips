@@ -22,11 +22,11 @@ int recupCode(char * fichierLecture,char *ligne,long *cur){
 
 
 int ecritureBinaire(int tab[], int indic){
-	int instBin;
+	int instBin = 0;
 	switch(indic){
 
 		case 0 : /*ADD*/
-			instBin = instBin | 32; 
+			instBin = instBin | 32;
 			instBin = instBin | tab[0]<<11;
 			instBin = instBin | tab[2]<<16;
 			instBin = instBin | tab[1]<<21;
@@ -57,7 +57,8 @@ int ecritureBinaire(int tab[], int indic){
 			instBin = instBin | 2;
 			instBin = instBin | tab[2]<<6;
 			instBin = instBin | tab[0]<<11;
-			instBin = instBin | (tab[1]+32)<<16;
+			instBin = instBin | (tab[1])<<16;
+			instBin = instBin | 1<<21;
 			break;
 
 		case 5: /*NOP*/
@@ -74,53 +75,41 @@ int ecritureBinaire(int tab[], int indic){
 
 
 
-int separation(char * ligne, char *robert[], char fichierEcriture[100]){
-	int i=0;
-	int j=0;
-	int k=0;
-	char tab[10]="";
-	int tab3[10]={0};
+void separation(char *ligne, char *operande, int *valeur){
+	int i=0, j=0, k=0;
 
 	while (ligne[i] != NULL){
 
 		if ((ligne[i] >= 0x41) && (ligne[i] <= 0x5a)) {
-			tab[j] = ligne[i];
+			operande[j] = ligne[i];
 			j++;
 			}
 
-		else if (ligne[i] >= 0x30 && ligne[i] <= 0x39){
-			char tab2[10]="";
+		else if (ligne[i] >= 0x30 && ligne[i] <= 0x39 || ligne[i] == 0x2d){
+			char tab[5]="";
 			int l=0;
 			while (ligne[i] != 0x2c && ligne[i] != 0x0a && ligne[i] != NULL){
-				tab2[l] = ligne[i];
-				printf("TAB2: %s, ligne: %c\n", tab2, ligne[i]);
+				tab[l] = ligne[i];
 				l++;
 				i++;
 			}
-			tab3[k] = atoi(tab2);
+			valeur[k] = atoi(tab);
 			k++;
 		}
 		i++;
-		
+
 	}
-	
-
-
-	int indic = findIndic(robert, tab);
-
-	ecritureFichier("text.txt", ecritureBinaire(tab3,indic));
-	return(0);
 
 }
 
-int findIndic(char *robert[],char *tab[]){
+int findIndic(char *robert[],char *operande){
 	int i=0;
-	while ((robert[i] != NULL) && (strcmp(robert[i],tab) != 0)){
+	while ((robert[i] != NULL) && (strcmp(robert[i],operande) != 0)){
 		i++;
 	}
 	return (i);
-	
-}	
+
+}
 
 void ecritureFichier(char fichierEcriture[],int instBin){
 	FILE * fic;

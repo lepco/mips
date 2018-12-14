@@ -1,14 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 int recupCode(char * fichierLecture,char *ligne,long *cur);
 
 int lecture(char fichierLecture[100], char *robert[]);
 
-int findIndic(char *robert[],char *tab[]);
+int findIndic(char *robert[],char *operande);
 
-int separation(char * ligne, char *robert[], char fichierEcriture[100]);
+void separation(char * ligne, char *operande, int *valeur);
 
 int ecritureBinaire(int tab[], int indic);
 
