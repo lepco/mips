@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int recupCode(char * fichierLecture,char *ligne,long *cur);
+int recupCode(const char * fichierLecture,char *ligne,long *cur);
 
 int findIndic(char *robert[],char *operande);
 

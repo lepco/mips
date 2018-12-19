@@ -1,9 +1,10 @@
 #include "fonctions.h"
 
 
-int recupCode(char * fichierLecture,char *ligne,long *cur){
+int recupCode(const char * fichierLecture,char *ligne,long *cur){
 
 	FILE * f = fopen(fichierLecture,"r");
+
 	if(f != NULL){
 		fseek(f,*cur, SEEK_SET);
 			if(fgets(ligne, 1000,f)!=NULL){
@@ -11,6 +12,7 @@ int recupCode(char * fichierLecture,char *ligne,long *cur){
 				fclose(f);
 				return 1;
 			}
+
 			else {
 				fclose(f);
 				return -1;
@@ -48,6 +50,7 @@ int ecritureBinaire(int tab[], int indic){
 
 		case 3 : /*BNE*/
 			instBin = instBin | tab[2];
+			instBin = instBin & 65535;
 			instBin = instBin | tab[1]<<16;
 			instBin = instBin | tab[0]<<21;
 			instBin = instBin | 5<<26;
@@ -78,27 +81,28 @@ int ecritureBinaire(int tab[], int indic){
 void separation(char *ligne, char *operande, int *valeur){
 	int i=0, j=0, k=0;
 
-	while (ligne[i] != NULL){
+		while (ligne[i] != NULL && ligne[i] != 0x23 && ligne[i] != 0x0a){
 
-		if ((ligne[i] >= 0x41) && (ligne[i] <= 0x5a)) {
-			operande[j] = ligne[i];
-			j++;
-			}
+			if ((ligne[i] >= 0x41) && (ligne[i] <= 0x5a)) {
+				operande[j] = ligne[i];
+				j++;
+				}
 
-		else if (ligne[i] >= 0x30 && ligne[i] <= 0x39 || ligne[i] == 0x2d){
-			char tab[5]="";
-			int l=0;
-			while (ligne[i] != 0x2c && ligne[i] != 0x0a && ligne[i] != NULL){
-				tab[l] = ligne[i];
-				l++;
-				i++;
+			else if (ligne[i] >= 0x30 && ligne[i] <= 0x39 || ligne[i] == 0x2d){
+				char tab[5]="";
+				int l=0;
+				while (ligne[i] != 0x2c && ligne[i] != 0x0a && ligne[i] != NULL){
+					tab[l] = ligne[i];
+					l++;
+					i++;
+				}
+				valeur[k] = atoi(tab);
+				k++;
 			}
-			valeur[k] = atoi(tab);
-			k++;
+			i++;
+
 		}
-		i++;
-
-	}
+		ligne[i]=NULL;
 
 }
 
@@ -126,7 +130,7 @@ void ecritureFichier(char fichierEcriture[],int instBin){
 		}
 
 		fprintf(fic, "\n");
-		fprintf(fic, "%02X\n", instBin);
+		fprintf(fic, "%08X\n", instBin);
 	}
 	else{
 		perror("Probleme ouverture du fichier en ecriture");
