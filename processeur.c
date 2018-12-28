@@ -1,30 +1,42 @@
 #include "processeur.h"
 
-void execution(int tab[], int indic, int *registre){
+void execution(int valeur[], int indic, int *registre, long *cur, int *i, long cursorTab[]){
 
 	switch(indic){
 
 		case 0 :  /*ADD*/
 			/* rd = rt + rs*/
-			registre[tab[0]] = registre[tab[1]] + registre[tab[2]];
+			registre[valeur[0]] = registre[valeur[1]] + registre[valeur[2]];
 			registre[32]++;
 			break;
 
 		case 1 : /*ADDI*/
 			/*rt = rs + immediate*/
-			registre[tab[0]] = registre[tab[1]] + tab[2];
+			registre[valeur[0]] = registre[valeur[1]] + valeur[2];
 			registre[32]++;
 			break;
 
 		case 2 : /*ADDI*/
 			/*rd = rs AND rt*/
-			registre[tab[0]] = registre[tab[1]] & tab[2];
+			registre[valeur[0]] = registre[valeur[1]] & valeur[2];
 			registre[32]++;
+			break;
+
+		case 3 : /* BNE */
+			/*if rs != rt ==> goto offset*/
+			if (registre[valeur[0]] != registre[valeur[1]]){
+				*cur = cursorTab[(*i+valeur[2])-1];
+				*i = (*i+valeur[2]-1);
+			}
 			break;
 
 		case 4 : /*ROTR*/
 			/*rd = rt >> sa*/
-			registre[tab[0]] = registre[tab[1]] >> tab[2];
+			registre[valeur[0]] = registre[valeur[1]] >> valeur[2];
+			registre[32]++;
+			break;
+
+		case 5: /*NOP*/
 			registre[32]++;
 			break;
 

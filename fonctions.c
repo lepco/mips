@@ -23,44 +23,44 @@ int recupCode(const char * fichierLecture,char *ligne,long *cur){
 }
 
 
-int ecritureBinaire(int tab[], int indic){
+int ecritureBinaire(int valeur[], int indic){
 	int instBin = 0;
 	switch(indic){
 
 		case 0 : /*ADD*/
 			instBin = instBin | 32;
-			instBin = instBin | tab[0]<<11;
-			instBin = instBin | tab[2]<<16;
-			instBin = instBin | tab[1]<<21;
+			instBin = instBin | valeur[0]<<11;
+			instBin = instBin | valeur[2]<<16;
+			instBin = instBin | valeur[1]<<21;
 			break;
 
 		case 1 : /*ADDI*/
-			instBin = instBin | tab[2];
-			instBin = instBin | tab[0]<<16;
-			instBin = instBin | tab[1]<<21;
+			instBin = instBin | valeur[2];
+			instBin = instBin | valeur[0]<<16;
+			instBin = instBin | valeur[1]<<21;
 			instBin = instBin | 8<<26;
 			break;
 
 		case 2 : /*AND*/
 			instBin = instBin | 36;
-			instBin = instBin | tab[0]<<11;
-			instBin = instBin | tab[2]<<16;
-			instBin = instBin | tab[1]<<21;
+			instBin = instBin | valeur[0]<<11;
+			instBin = instBin | valeur[2]<<16;
+			instBin = instBin | valeur[1]<<21;
 			break;
 
 		case 3 : /*BNE*/
-			instBin = instBin | tab[2];
+			instBin = instBin | valeur[2];
 			instBin = instBin & 65535;
-			instBin = instBin | tab[1]<<16;
-			instBin = instBin | tab[0]<<21;
+			instBin = instBin | valeur[1]<<16;
+			instBin = instBin | valeur[0]<<21;
 			instBin = instBin | 5<<26;
 			break;
 
 		case 4: /*ROTR*/
 			instBin = instBin | 2;
-			instBin = instBin | tab[2]<<6;
-			instBin = instBin | tab[0]<<11;
-			instBin = instBin | (tab[1])<<16;
+			instBin = instBin | valeur[2]<<6;
+			instBin = instBin | valeur[0]<<11;
+			instBin = instBin | (valeur[1])<<16;
 			instBin = instBin | 1<<21;
 			break;
 

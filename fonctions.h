@@ -7,6 +7,6 @@ int findIndic(char *robert[],char *operande);
 
 void separation(char * ligne, char *operande, int *valeur);
 
-int ecritureBinaire(int tab[], int indic);
+int ecritureBinaire(int valeur[], int indic);
 
 void ecritureFichier(char fichierEcriture[],int instBin);

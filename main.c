@@ -28,6 +28,7 @@ int main(int argc, char const *argv[]){
 	char ligne[50]="";
 	int registre[34] = {0};
 	char wait;
+	long cursorTab[30] = {0};
 
 	/*Test si on lance le programme en lecture de fichier ou pas*/
 	/*Premier cas : instructions rentrés à la main*/
@@ -37,6 +38,7 @@ int main(int argc, char const *argv[]){
 		do {
 			int valeur[4]={0};
 			char operande[5]="";
+			int i=0; /*Le i ici est inutile, il sert juste à pouvoir executer la fonction "execution"*/
 
 			/*Demande d'une nouvelle instruction*/
 			printf("Entrez l'instruction (sans espaces): ");
@@ -46,7 +48,7 @@ int main(int argc, char const *argv[]){
 			separation(ligne, operande, valeur);
 			if (ligne[0] != NULL){
 				ecritureFichier(argv[2], ecritureBinaire(valeur, findIndic(robert, operande)));
-				execution(valeur, findIndic(robert, operande),  registre);
+				execution(valeur, findIndic(robert, operande),  registre, &cur, i, cursorTab);
 				affichage(ligne, registre);
 			}
 
@@ -56,27 +58,43 @@ int main(int argc, char const *argv[]){
 
 		} while(keepGoing == 1);
 
-		printf("****** Sortie de l'émulateur ******\n");
 	}
 	/*Deuxième cas : lecture d'un fichier*/
 	else{
 		printf("Lancement en mode lecture de fichier\n");
+		int i=1;
 		while(recupCode(argv[1], ligne, &cur) != -1){
 
 			int valeur[4]={0};
 			char operande[5]="";
+
+			cursorTab[i] = cur;
 			separation(ligne, operande, valeur);
 
 
 			if (ligne[0] != NULL){
 				ecritureFichier(argv[2], ecritureBinaire(valeur, findIndic(robert, operande)));
-				execution(valeur, findIndic(robert, operande),  registre);
-				affichage(ligne, registre);
+			}
+			i++;
+		}
 
+		cur=0;
+		i=1;
+		while(recupCode(argv[1], ligne, &cur) != -1){
+
+			int valeur[4]={0};
+			char operande[5]="";
+
+			separation(ligne, operande, valeur);
+
+			if (ligne[0] != NULL){
+				execution(valeur, findIndic(robert, operande),  registre, &cur, &i, cursorTab);
+				affichage(ligne, registre);
 				scanf("%c", &wait);
 			}
+			i++;
 		}
-		printf("****** Sortie de l'émulateur ******\n");
 	}
+	printf("****** Sortie de l'émulateur ******\n");
 	return(0);
 }
