@@ -27,6 +27,7 @@ int main(int argc, char const *argv[]){
 	long cur=0;
 	char ligne[50]="";
 	int registre[34] = {0};
+	registre[32] = 1;
 	char wait;
 	long cursorTab[30] = {0};
 

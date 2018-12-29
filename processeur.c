@@ -16,7 +16,7 @@ void execution(int valeur[], int indic, int *registre, long *cur, int *i, long c
 			registre[32]++;
 			break;
 
-		case 2 : /*ADDI*/
+		case 2 : /*AND*/
 			/*rd = rs AND rt*/
 			registre[valeur[0]] = registre[valeur[1]] & valeur[2];
 			registre[32]++;
@@ -27,7 +27,11 @@ void execution(int valeur[], int indic, int *registre, long *cur, int *i, long c
 			if (registre[valeur[0]] != registre[valeur[1]]){
 				*cur = cursorTab[(*i+valeur[2])-1];
 				*i = (*i+valeur[2]-1);
-			}
+				registre[32] = registre[32] + valeur[2];
+		}
+		else{
+			registre[32]++;
+		}
 			break;
 
 		case 4 : /*ROTR*/
