@@ -7,41 +7,41 @@ void execution(int valeur[], int indic, int *registre, long *cur, int *i, long c
 		case 0 :  /*ADD*/
 			/* rd = rt + rs*/
 			registre[valeur[0]] = registre[valeur[1]] + registre[valeur[2]];
-			registre[32]++;
+			registre[32]=(*i-1)*4;
 			break;
 
 		case 1 : /*ADDI*/
 			/*rt = rs + immediate*/
 			registre[valeur[0]] = registre[valeur[1]] + valeur[2];
-			registre[32]++;
+			registre[32]=(*i-1)*4;
 			break;
 
-		case 2 : /*AND*/
+		case 2 : /*ADDI*/
 			/*rd = rs AND rt*/
 			registre[valeur[0]] = registre[valeur[1]] & valeur[2];
-			registre[32]++;
+			registre[32]=(*i-1)*4;
 			break;
 
 		case 3 : /* BNE */
 			/*if rs != rt ==> goto offset*/
 			if (registre[valeur[0]] != registre[valeur[1]]){
 				*cur = cursorTab[(*i+valeur[2])-1];
+				registre[32]=(*i-1)*4;
 				*i = (*i+valeur[2]-1);
-				registre[32] = registre[32] + valeur[2];
-		}
-		else{
-			registre[32]++;
-		}
+			}
+			else{
+				registre[32]=(*i-1)*4;
+			}
 			break;
 
 		case 4 : /*ROTR*/
 			/*rd = rt >> sa*/
 			registre[valeur[0]] = registre[valeur[1]] >> valeur[2];
-			registre[32]++;
+			registre[32]=(*i-1)*4;
 			break;
 
 		case 5: /*NOP*/
-			registre[32]++;
+			registre[32]=(*i-1)*4;
 			break;
 
 		default :

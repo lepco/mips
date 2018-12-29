@@ -9,4 +9,6 @@ void separation(char * ligne, char *operande, int *valeur);
 
 int ecritureBinaire(int valeur[], int indic);
 
+void registerReplacement(char *ligne, char *dicoRegistre);
+
 void ecritureFichier(char fichierEcriture[],int instBin);

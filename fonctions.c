@@ -115,6 +115,40 @@ int findIndic(char *robert[],char *operande){
 
 }
 
+void registerReplacement(char *ligne, char *dicoRegistre){
+	int i=0;
+	while (ligne[i] != NULL && ligne[i] != 0x23 && ligne[i] != 0x0a){
+
+		if (ligne[i-1] == 0x24 && (ligne[i] >= 0x61 && ligne[i] <= 0x7a)){
+			char tmp[10]="";
+			int l=0;
+
+			while (ligne[i+l] != 0x2c && ligne[i+l] != 0x20 && ligne[i+l] != 0x0a){
+				tmp[l] = ligne[i+l];
+				l++;
+			}
+
+			if (findIndic(dicoRegistre, tmp)>=10){
+				ligne[i]=findIndic(dicoRegistre, tmp)/10+0x30;
+				i++;
+				ligne[i]=findIndic(dicoRegistre, tmp)%10+0x30;
+				l--;
+			}
+			else{
+				ligne[i]=findIndic(dicoRegistre, tmp)+0x30;
+		}
+
+			int k=1;
+
+			while (ligne[i+k] != NULL && ligne[i+k] != 0x0a){
+				ligne[i+k]= ligne[k+i+l-1];
+				k++;
+			}
+		}
+	i++;
+	}
+}
+
 void ecritureFichier(char fichierEcriture[],int instBin){
 	FILE * fic;
 	int k, i;
