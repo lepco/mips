@@ -23,13 +23,14 @@ int main(int argc, char const *argv[]){
 	// Declaration des variables
 	//-------------------------------------------------------------------------------------------------*/
 
-	char *robert[15] = {"ADD", "ADDI", "AND", "BNE", "ROTR", "NOP"};/*Instuction assembleur(ADD, NOP, BGTZ,...)*/
-	char *dicoRegistre[32] = {"zero", "at", "v0", "v1", "a0", "a1", "a2", "a3", "t0", "t1",
-	"t2", "t3", "t4", "t5", "t6", "t7", "s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "t8",
-	"t9", "k0", "k1", "gp", "sp", "fp", "ra"};
+	char *robert[15] = {"ADD", "ADDI", "AND", "BEQ", "BGTZ", "BLEZ", "BNE",
+	 	"DIV", "J", "JAL", "JR", "LUI", "LW", "MFHI", "MFLO", "MULT", "OR", "ROTR", "SLL",
+  	"SLT", "SRL", "SUB", "SW", "XOR"}; /*Instuction assembleur(ADD, NOP, BGTZ,...)*/
 	long cur=0;
 	char ligne[50]="";
-	int registre[34] = {0};
+	int registre[35] = {0};
+
+	char wait;
 	long cursorTab[30] = {0};
 
 	/*Test si on lance le programme en lecture de fichier ou pas*/
@@ -64,25 +65,20 @@ int main(int argc, char const *argv[]){
 	/*Deuxième cas : lecture d'un fichier*/
 	else{
 		printf("Lancement en mode lecture de fichier\n");
-		printf("Affichage de la mémoire\n");
 		int i=1;
 		while(recupCode(argv[1], ligne, &cur) != -1){
-			
+
 			int valeur[4]={0};
 			char operande[5]="";
 
-
-			registerReplacement(ligne, dicoRegistre);
-
+			cursorTab[i] = cur;
 			separation(ligne, operande, valeur);
 
 
 			if (ligne[0] != NULL){
-				cursorTab[i] = cur;
 				ecritureFichier(argv[2], ecritureBinaire(valeur, findIndic(robert, operande)));
-				printf("%d : %08X\n", ((i-1)*4), ecritureBinaire(valeur, findIndic(robert, operande)));
-				i++;
 			}
+			i++;
 		}
 
 		cur=0;
@@ -92,16 +88,14 @@ int main(int argc, char const *argv[]){
 			int valeur[4]={0};
 			char operande[5]="";
 
-			registerReplacement(ligne, dicoRegistre);
-
 			separation(ligne, operande, valeur);
 
 			if (ligne[0] != NULL){
 				execution(valeur, findIndic(robert, operande),  registre, &cur, &i, cursorTab);
 				affichage(ligne, registre);
-				i++;
-				scanf("%c");
+				scanf("%c", &wait);
 			}
+			i++;
 		}
 	}
 	printf("****** Sortie de l'émulateur ******\n");

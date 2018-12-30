@@ -48,7 +48,29 @@ int ecritureBinaire(int valeur[], int indic){
 			instBin = instBin | valeur[1]<<21;
 			break;
 
-		case 3 : /*BNE*/
+		case 3 : /*BEQ*/
+			instBin = instBin | valeur[2];		/*offset*/
+			instBin = instBin & 65535;
+			instBin = instBin | valeur[1]<<16;/*rt*/
+			instBin = instBin | valeur[0]<<21;/*rs*/
+			instBin = instBin | 4<<26;
+			break;
+
+		case 4 : /*BGTZ*/
+			instBin = instBin | valeur[1];		/*offset*/
+			instBin = instBin & 65535;
+			instBin = instBin | valeur[0]<<21;/*rs*/
+			instBin = instBin | 7<<26;
+			break;
+
+		case 5 : /*BLEZ*/
+			instBin = instBin | valeur[1];		/*offset*/
+			instBin = instBin & 65535;
+			instBin = instBin | valeur[0]<<21;/*rs*/
+			instBin = instBin | 6<<26;
+			break;
+
+		case 6 : /*BNE*/
 			instBin = instBin | valeur[2];
 			instBin = instBin & 65535;
 			instBin = instBin | valeur[1]<<16;
@@ -56,7 +78,54 @@ int ecritureBinaire(int valeur[], int indic){
 			instBin = instBin | 5<<26;
 			break;
 
-		case 4: /*ROTR*/
+		case 7 : /*DIV*/
+			instBin = instBin | 26;
+			instBin = instBin | valeur[1]<<16;/*rs*/
+			instBin = instBin | valeur[0]<<21;/*rt*/
+			break;
+
+		case 8 : /*JUMP*/
+			instBin = instBin | valeur[0]>>2;
+			instBin = instBin | 2<<26;
+			break;
+
+		case 9 : /*JAL*/
+			instBin = instBin | valeur[0]>>2;
+			instBin = instBin | 3<<26;
+			break;
+
+		case 10 : /*JR*/
+			instBin = instBin | 8;
+			instBin = instBin | valeur[0]<<21;
+			break;
+
+		case 11 : /*LUI*/
+			break;
+
+		case 12 : /*LW*/
+			break;
+
+		case 13 : /*MFHI*/
+			instBin = instBin | 16;
+			instBin = instBin | valeur[0]<<11;
+			break;
+
+		case 14 : /*MFLO*/
+			instBin = instBin | 18;
+			instBin = instBin | valeur[0]<<11;
+			break;
+
+		case 15 : /*MULT*/
+			break;
+
+		case 16 : /*OR*/
+			instBin = instBin | 37;
+			instBin = instBin | valeur[0]<<11;
+			instBin = instBin | valeur[2]<<16;
+			instBin = instBin | valeur[1]<<21;
+			break;
+
+		case 17 : /*ROTR*/
 			instBin = instBin | 2;
 			instBin = instBin | valeur[2]<<6;
 			instBin = instBin | valeur[0]<<11;
@@ -64,7 +133,35 @@ int ecritureBinaire(int valeur[], int indic){
 			instBin = instBin | 1<<21;
 			break;
 
-		case 5: /*NOP*/
+		case 18 : /*SLL*/
+			instBin = instBin | valeur[2]<<6;
+			instBin = instBin | valeur[0]<<11;
+			instBin = instBin | (valeur[1])<<16;
+			instBin = instBin | 1<<21;
+			break;
+
+		case 19 : /*SLT*/
+			break;
+
+		case 20 : /*SRL*/
+			instBin = instBin | 2;
+			instBin = instBin | valeur[2]<<6;
+			instBin = instBin | valeur[0]<<11;
+			instBin = instBin | (valeur[1])<<16;
+			instBin = instBin | 0<<21;
+			break;
+
+		case 21 : /*SUB*/
+			break;
+
+		case 22 : /*SW*/
+			break;
+
+		case 23 : /*XOR*/
+			instBin = instBin | 38;
+			instBin = instBin | valeur[0]<<11;
+			instBin = instBin | valeur[2]<<16;
+			instBin = instBin | valeur[1]<<21;
 			break;
 
 
@@ -113,40 +210,6 @@ int findIndic(char *robert[],char *operande){
 	}
 	return (i);
 
-}
-
-void registerReplacement(char *ligne, char *dicoRegistre){
-	int i=0;
-	while (ligne[i] != NULL && ligne[i] != 0x23 && ligne[i] != 0x0a){
-
-		if (ligne[i-1] == 0x24 && (ligne[i] >= 0x61 && ligne[i] <= 0x7a)){
-			char tmp[10]="";
-			int l=0;
-
-			while (ligne[i+l] != 0x2c && ligne[i+l] != 0x20 && ligne[i+l] != 0x0a){
-				tmp[l] = ligne[i+l];
-				l++;
-			}
-
-			if (findIndic(dicoRegistre, tmp)>=10){
-				ligne[i]=findIndic(dicoRegistre, tmp)/10+0x30;
-				i++;
-				ligne[i]=findIndic(dicoRegistre, tmp)%10+0x30;
-				l--;
-			}
-			else{
-				ligne[i]=findIndic(dicoRegistre, tmp)+0x30;
-		}
-
-			int k=1;
-
-			while (ligne[i+k] != NULL && ligne[i+k] != 0x0a){
-				ligne[i+k]= ligne[k+i+l-1];
-				k++;
-			}
-		}
-	i++;
-	}
 }
 
 void ecritureFichier(char fichierEcriture[],int instBin){
