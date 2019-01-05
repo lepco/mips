@@ -23,7 +23,7 @@ int main(int argc, char const *argv[]){
 	// Declaration des variables
 	//-------------------------------------------------------------------------------------------------*/
 
-	char *robert[15] = {"ADD", "ADDI", "AND", "BEQ", "BGTZ", "BLEZ", "BNE",
+	char *robert[23] = {"ADD", "ADDI", "AND", "BEQ", "BGTZ", "BLEZ", "BNE",
 	 	"DIV", "J", "JAL", "JR", "LUI", "LW", "MFHI", "MFLO", "MULT", "OR", "ROTR", "SLL",
   	"SLT", "SRL", "SUB", "SW", "XOR"}; /*Instuction assembleur(ADD, NOP, BGTZ,...)*/
 	long cur=0;

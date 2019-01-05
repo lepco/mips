@@ -1,7 +1,8 @@
 #include "processeur.h"
 
 void execution(int valeur[], int indic, int *registre, long *cur, int *i, long cursorTab[]){
-
+	int j;
+	long long int resMult = 0;
 	switch(indic){
 
 		case 0 :  /*ADD*/
@@ -112,6 +113,10 @@ void execution(int valeur[], int indic, int *registre, long *cur, int *i, long c
 			break;
 
 		case 15 : /*MULT*/
+			resMult = registre[valeur[0]] * registre[valeur[1]];
+			registre[33] = resMult >> 32; /*HI*/
+			registre[34] = resMult; /*LO*/
+			registre[32] = registre[32] + 4;
 			break;
 
 		case 16 : /*OR*/
@@ -120,11 +125,11 @@ void execution(int valeur[], int indic, int *registre, long *cur, int *i, long c
 			break;
 
 		case 17 : /*ROTR*/
-
-		/*A modifier !!!!!!!!!!!!!!!!!!!!*/
-
-			/*rd = rt >> sa*/
 			registre[valeur[0]] = registre[valeur[1]] >> valeur[2];
+			for (j = 0; j < valeur[2]; j++) {
+				/*rd = rd | (((rt >> j) & 1) << (32 - j))*/
+				registre[valeur[0]] = registre[valeur[0]] | (((registre[valeur[1]] >> j) & 1) << (31 - j));
+			}
 			registre[32] = registre[32] + 4;
 			break;
 
@@ -134,6 +139,11 @@ void execution(int valeur[], int indic, int *registre, long *cur, int *i, long c
 			break;
 
 		case 19 : /*SLT*/
+			if (registre[valeur[1]] < registre[valeur[2]])
+				registre[valeur[0]] = 1;
+			else
+				registre[valeur[0]] = 0;
+			registre[32] = registre[32] + 4;
 			break;
 
 		case 20 : /*SRL*/
@@ -142,12 +152,16 @@ void execution(int valeur[], int indic, int *registre, long *cur, int *i, long c
 			break;
 
 		case 21 : /*SUB*/
+			registre[valeur[0]] = registre[valeur[1]] - registre[valeur[2]];
+			registre[32] = registre[32] + 4;
 			break;
 
 		case 22 : /*SW*/
 			break;
 
 		case 23 : /*XOR*/
+			registre[valeur[0]] = registre[valeur[1]] ^ registre[valeur[2]];
+			registre[32] = registre[32] + 4;
 			break;
 
 		default :
